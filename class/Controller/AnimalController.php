@@ -1,27 +1,28 @@
 <?php
-require '../../config/dbconnection.php';
+require_once __DIR__ . '/../../config/dbconnection.php';
 
-    class AnimalController{
+class AnimalController {
 
-        public function listar(){
-            $sql = "SELECT * FROM animal ORDER BY id ASC";
-            global $conexao;
-            $result = mysqli_query($conexao, $sql);
-            
-            $lista = array();
-            if ($result) {
-                while ($linha = mysqli_fetch_assoc($result)) {
-                    $id = $linha[0];
-                    $nome = $linha[1];
-                    $id_especie = $linha[2];
-                    $especie = new Especie();
-                    $animal = new Animal($id, $nome, $id_especie);
-                    // $lista[] = $linha;
-                    array_push($animais, $animal);
-                }
+    public function listar(){
+        global $conexao;
+        $sql = "SELECT a.id, a.nome, e.id AS especie_id, e.nome AS especie_nome
+        FROM animal a
+        JOIN especie e ON a.especie = e.id
+        ORDER BY a.id ASC";
+        $result = mysqli_query($conexao, $sql);
+
+        $animais = [];
+        if ($result) {
+            while ($linha = mysqli_fetch_assoc($result)) {
+                $id = $linha['id'];
+                $nome = $linha['nome'];
+
+                $especie = new Especie($linha['especie_id'], $linha['especie_nome']);
+
+                $animal = new Animal($id, $nome, $especie);
+                $animais[] = $animal;
             }
-            return $animais;
         }
+        return $animais;
     }
-
-?>
+}

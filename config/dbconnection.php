@@ -9,11 +9,11 @@
     $conexao = new mysqli($host, $user, $password, $dbname);
 
 
-    if($conexao->connect_errno){
-        die ("Erro na conexao com o banco de dados");
-    }else{
-        echo 'conexao estabelecida';
-    }
+    // if($conexao->connect_errno){
+    //     die ("Erro na conexao com o banco de dados");
+    // }else{
+    //     echo 'conexao estabelecida';
+    // }
     
 
 
